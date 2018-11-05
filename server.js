@@ -43,5 +43,10 @@ app.post('/api/outgoing/sms', (req, res) => {
     })
 })
 
+app.get('/api/block', (req, res) => {
+  console.log(req.query.block)
+  res.sendStatus(200)
+})
+
 
 module.exports = app
