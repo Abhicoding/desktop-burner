@@ -13,8 +13,10 @@ var param = require('./params/param')
 app.use(bodyparser.xml())
 
 app.get('/api/outgoing/call', (req, res) => {
-  var query = {From, CallerId, Url} = param
-  request.post('https://api.exotel.com/v1/Accounts/exotel301/Calls/connect')
+  console.log(req.query)
+  var query = {From, CallerId} = param
+  query.To = req.query.To
+  request.post(`https://api.exotel.com/v1/Accounts/${auth.account_sid}/Calls/connect`)
     .auth(auth.account_sid, auth.account_token)
     .query(query)
     .then (r => {

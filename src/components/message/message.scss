@@ -1,0 +1,48 @@
+div.item {
+  display: inline-block;
+  margin: 1%;
+  padding: 0.5%;
+  border: 0.1rem solid;
+  border-radius: 0.4rem; 
+  background-color: rgb(1, 30, 31);
+  color:rgb(0, 229, 255);
+  box-shadow: 0 0 0.5rem #F64FFF;
+  width: 2rem;
+  >img {
+    width: 90%;
+    margin: 1%;
+    }
+}
+
+textarea.screen {
+  display: inline-block;
+  margin: 0.5rem;
+  height: 5rem;
+  width: 25%;
+  color:rgb(0, 229, 255);
+  margin: auto;
+  background-color: rgb(1, 30, 31);
+  overflow: hidden;
+  padding: 0.2rem;
+  border: 0.1rem solid;
+  border-color: rgb(0, 229, 255);
+  box-shadow: 0 0 0.5rem #F64FFF;
+  font-size: 1rem;
+}
+
+div.item:active {
+  animation-name: button;
+  animation-duration: 300ms;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes button {
+  0% {
+    opacity: 0;
+    transform: scale(0.9); }
+  80% {
+    transform: scale(1.1); }
+  100% {
+    opacity: 1;
+    transform: scale(1) } 
+  }
