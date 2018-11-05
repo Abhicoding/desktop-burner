@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 
 import request from 'superagent'
 import Button from '../Button.jsx'
-import phoneCall from '../../fonts-and-images/phone-call.svg'
+import phoneCall from '../../fonts-and-images/phone.svg'
 import phoneHangup from '../../fonts-and-images/phone-hangup.svg'
 import './call.scss'
 
@@ -13,7 +13,7 @@ class Call extends Component {
       screen : ''
     }
     this.makeCall = this.makeCall.bind(this)
-    // this.hangupCall = this.hangupCall.bind(this)
+    this.hangupCall = this.hangupCall.bind(this)
   }
 
   inputUpdate (e) {
@@ -22,12 +22,12 @@ class Call extends Component {
     if (isInt(entry)) {
       this.setState({
         screen: this.state.screen + entry
-      })
+      }, () => this.props.update('call', this.state.screen))
     }
     if (entry === 'Backspace') {
       this.setState({
         screen: this.state.screen.slice(1)
-      })
+      }, () => this.props.update('call', this.state.screen))
     }
   }
 
@@ -38,10 +38,9 @@ class Call extends Component {
   }
 
   hangupCall () {
-    console.log('this ran')
-    // request.get('/api/outgoing/call')
-    //   .query({To: this.state.screen})
-    //   .then(r => r)
+    this.setState({
+      screen: ''
+    }, () => this.props.clear('call'))
   }
 
   render () {
@@ -56,7 +55,7 @@ class Call extends Component {
         <Button className='item'
           value={<img src={phoneCall}/>} clickHandler={this.makeCall}/>
         <Button className='item'
-          value={<img src={phoneHangup}/>} clickHandler={this.makeCall}/>
+          value={<img src={phoneHangup}/>} clickHandler={this.hangupCall}/>
       </div>
     )}
 }

@@ -1,7 +1,8 @@
 import React, {Component} from 'react'
 
 import request from 'superagent'
-
+import Button from '../Button'
+import message from '../../fonts-and-images/send.svg'
 import './message.scss'
 
 class Message extends Component {
@@ -10,6 +11,7 @@ class Message extends Component {
     this.state = {
       screen : ''
     }
+    this.sendMessage = this.sendMessage.bind(this)
   }
 
   inputUpdate (e) {
@@ -17,6 +19,21 @@ class Message extends Component {
     this.setState({
       screen: entry
     })
+  }
+
+  sendMessage () {
+    this.sendRequest()
+    this.setState({
+      screen: ''
+    }, () => {
+      this.props.clear('message')
+    })
+  }
+
+  sendRequest () {
+    request.post('/api/outgoing/sms')
+      .send({Message: this.state.screen, To: this.props.to})
+      .then(r => r)
   }
 
   render () {
@@ -27,10 +44,8 @@ class Message extends Component {
             value={this.state.screen}
             onChange={e => this.inputUpdate(e)}/>
         </div>
-        {/* <Button className='item'
-          value={<img src={phoneCall}/>} clickHandler={this.makeCall}/>
         <Button className='item'
-          value={<img src={phoneHangup}/>} clickHandler={this.makeCall}/> */}
+          value={<img src={message}/>} clickHandler={this.sendMessage}/>
       </div>
     )}
 }
