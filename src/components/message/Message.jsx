@@ -33,7 +33,10 @@ class Message extends Component {
   sendRequest () {
     request.post('/api/outgoing/sms')
       .send({Message: this.state.screen, To: this.props.to})
-      .then(r => r)
+      .then(r => {
+        if (r.status === 200) return this.props.notify('Message sent!')
+        return this.props.notify('Failed to send')
+      })
   }
 
   render () {

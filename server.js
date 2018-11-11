@@ -13,11 +13,15 @@ var param = require('./params/param')
 app.use(bodyparser.xml())
 app.use(bodyparser.json())
 
+var blocked = ['08879367443']
 
 app.get('/api/outgoing/call', (req, res) => {
-  console.log(req.query)
-  var query = {From, CallerId} = param
+  var {From, CallerId} = param
+  var query = {}
   query.To = req.query.To
+  query.From = From
+  query.CallerId = CallerId
+  console.log(query)
   request.post(`https://api.exotel.com/v1/Accounts/${auth.account_sid}/Calls/connect`)
     .auth(auth.account_sid, auth.account_token)
     .query(query)
@@ -32,8 +36,8 @@ app.post('/api/outgoing/sms', (req, res) => {
   var message = param.template
   message =  message.replace('%s', req.body.Message)
   message =  message.replace('%d', param.From)
-  query.To = req.body.To
   query.Body = message
+  query.To = req.body.To
   request.post(`https://api.exotel.com/v1/Accounts/${auth.account_sid}/Sms/send`)
     .auth(auth.account_sid, auth.account_token)
     .query(query)
@@ -44,7 +48,15 @@ app.post('/api/outgoing/sms', (req, res) => {
 })
 
 app.get('/api/block', (req, res) => {
-  console.log(req.query.block)
+  console.log(req.query)
+  blocked.push (req.query.block)
+  res.sendStatus(200)
+})
+
+app.get('/api/checkblock', (req, res) => {
+
+  console.log(req.query)
+  if (blocked.includes(req.query.CallFrom)) return res.sendStatus(302)
   res.sendStatus(200)
 })
 
